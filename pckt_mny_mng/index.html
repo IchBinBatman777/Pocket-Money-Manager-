@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pocket Money Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>💰 Pocket Money Manager</h1>
+
+        <p class="subtitle">
+            Track your daily spending wisely
+        </p>
+
+        <!-- Budget Section -->
+
+        <div class="budget-box">
+
+            <h2>Set Today's Budget</h2>
+
+            <input
+                type="number"
+                id="budgetInput"
+                placeholder="Enter Today's Budget">
+
+            <button onclick="saveBudget()">
+                Save Budget
+            </button>
+
+        </div>
+
+        <!-- Summary Cards -->
+
+        <div class="summary">
+
+            <div class="card">
+
+                <h3>Budget</h3>
+
+                <p>₹<span id="budgetDisplay">0</span></p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Spent</h3>
+
+                <p>₹<span id="spentDisplay">0</span></p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Remaining</h3>
+
+                <p>₹<span id="remainingDisplay">0</span></p>
+
+            </div>
+
+        </div>
+
+        <!-- Expense Section -->
+
+        <div class="input-box">
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="Expense Name">
+
+            <label class="amountLabel">
+
+                Amount :
+                ₹<span id="amountValue">0</span>
+
+            </label>
+
+            <input
+                type="range"
+                id="amountSlider"
+                min="0"
+                max="0"
+                value="0"
+                step="10">
+        
+        <div id="statusBox" class="status safe">
+
+                ✅ You are within your budget.
+
+        </div>
+
+            <button onclick="addTask()">
+                Add Expense
+            </button>
+
+        </div>
+
+        <!-- Expense List -->
+
+        <ul id="taskList"></ul>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
