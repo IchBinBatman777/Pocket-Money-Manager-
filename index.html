@@ -70,6 +70,21 @@
 
         </div>
 
+        <!-- Progress Bar -->
+
+        <div class="progress-container">
+
+            <div class="progress-header">
+                <span>Budget Used</span>
+                <span id="progressPercent">0%</span>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+
+        </div>
+
         <!-- Expense Section -->
 
         <div class="input-box">
@@ -92,16 +107,32 @@
                 min="0"
                 max="0"
                 value="0"
-                step="10">
-        
-        <div id="statusBox" class="status safe">
+                step="5">
+
+            <div id="statusBox" class="status safe">
 
                 ✅ You are within your budget.
 
-        </div>
+            </div>
 
             <button onclick="addTask()">
                 Add Expense
+            </button>
+
+        </div>
+
+        <!-- UPI Auto-Add Section -->
+
+        <div class="upi-box">
+
+            <h2>📲 Add via UPI SMS</h2>
+
+            <textarea
+                id="upiSmsInput"
+                placeholder="Paste your UPI payment SMS here..."></textarea>
+
+            <button onclick="addFromUpiSms()">
+                Parse & Add Expense
             </button>
 
         </div>
