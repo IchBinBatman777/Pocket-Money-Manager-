@@ -4,7 +4,7 @@
 
 A slick, zero-setup web app that helps you stay on top of your daily spending — no sign-up, no backend, just open and go. 🚀
 
-🔗 **[Try it live →](#)** *https://ichbinbatman777.github.io/Pocket-Money-Manager-/*
+🔗 **Try it live →** *https://ichbinbatman777.github.io/Pocket-Money-Manager-/*
 
 ---
 
