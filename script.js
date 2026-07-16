@@ -18,6 +18,12 @@ const spentDisplay = document.getElementById("spentDisplay");
 
 const remainingDisplay = document.getElementById("remainingDisplay");
 
+const progressFill = document.getElementById("progressFill");
+
+const progressPercent = document.getElementById("progressPercent");
+
+const statusBox = document.getElementById("statusBox");
+
 // Load Previous Budget
 
 budgetDisplay.innerHTML = budget;
@@ -116,6 +122,82 @@ function addTask() {
 
 }
 
+// Add Expense from Pasted UPI SMS
+
+function addFromUpiSms() {
+
+    const input = document.getElementById("upiSmsInput");
+
+    const text = input.value.trim();
+
+    if (text === "") {
+
+        alert("Paste a UPI SMS first.");
+
+        return;
+
+    }
+
+    const parsed = parseUpiSms(text);
+
+    if (!parsed) {
+
+        alert("Couldn't detect an amount in that SMS. Please add the expense manually instead.");
+
+        return;
+
+    }
+
+    tasks.push({
+
+        text: parsed.merchant,
+
+        price: parsed.amount,
+
+        completed: false
+
+    });
+
+    input.value = "";
+
+    saveTasks();
+
+    displayTasks();
+
+}
+
+// Extract Amount & Merchant from UPI SMS Text
+
+function parseUpiSms(text) {
+
+    const amountMatch = text.match(/(?:rs\.?|inr)\s?([\d,]+(?:\.\d{1,2})?)/i);
+
+    if (!amountMatch) return null;
+
+    const amount = Number(amountMatch[1].replace(/,/g, ""));
+
+    if (!amount || amount <= 0) return null;
+
+    let merchant = "UPI Payment";
+
+    const vpaMatch = text.match(/vpa\s+([a-zA-Z0-9.\-_@]+)/i);
+
+    const toMatch = text.match(/\bto\s+([a-zA-Z0-9.\-_@ ]+?)(?:\s+on\b|\.|,|$)/i);
+
+    if (vpaMatch) {
+
+        merchant = vpaMatch[1];
+
+    } else if (toMatch) {
+
+        merchant = toMatch[1].trim();
+
+    }
+
+    return { amount, merchant };
+
+}
+
 // Display Expenses
 
 function displayTasks() {
@@ -182,17 +264,80 @@ function displayTasks() {
 
 function updateSummary() {
 
+    const remaining = budget - spent;
+
     spentDisplay.innerHTML = spent;
 
-    remainingDisplay.innerHTML = budget - spent;
+    remainingDisplay.innerHTML = remaining;
 
-    if (spent > budget) {
+    remainingDisplay.style.color = spent > budget ? "red" : "green";
 
-        remainingDisplay.style.color = "red";
+    // Progress Bar
 
-    } else {
+    const percentage = budget === 0 ? 0 : (spent / budget) * 100;
 
-        remainingDisplay.style.color = "green";
+    progressFill.style.width = Math.min(percentage, 100) + "%";
+
+    progressPercent.innerHTML = percentage.toFixed(0) + "%";
+
+    // Change Color
+
+    if (percentage < 60) {
+
+        progressFill.style.background =
+            "linear-gradient(90deg,#22c55e,#16a34a)";
+
+    }
+
+    else if (percentage < 90) {
+
+        progressFill.style.background =
+            "linear-gradient(90deg,#facc15,#f59e0b)";
+
+    }
+
+    else {
+
+        progressFill.style.background =
+            "linear-gradient(90deg,#ef4444,#dc2626)";
+
+    }
+
+    // Status Message
+
+    if (budget === 0) {
+
+        statusBox.className = "status warning";
+
+        statusBox.innerHTML = "⚠ Please set your budget.";
+
+    }
+
+    else if (spent < budget) {
+
+        statusBox.className = "status safe";
+
+        statusBox.innerHTML = "✅ You still have ₹" + remaining + " remaining today.";
+
+    }
+
+    else if (spent === budget) {
+
+        statusBox.className = "status warning";
+
+        statusBox.innerHTML = "⚠ Budget Limit Reached!";
+
+        alert("Daily Budget Reached!");
+
+    }
+
+    else {
+
+        statusBox.className = "status danger";
+
+        statusBox.innerHTML = "🚫 Budget Exceeded by ₹" + (spent - budget);
+
+        alert("Budget Exceeded!");
 
     }
 
